@@ -1,0 +1,142 @@
+{
+    "rojo.pluginManagement": false,
+    "workbench.sideBar.location": "right",
+    "explorer.confirmDragAndDrop": false,
+    "explorer.confirmDelete": false,
+    "workbench.tree.indent": 20,
+    "editor.semanticTokenColorCustomizations": {
+        "enabled": true,
+        "[RBLXDark]": {
+            "enabled": true,
+            "rules": {
+                //"*.declaration": "#ff0000"
+                //"event": "#ff0000"
+                "*.deprecated": "#ff0000"
+            }
+        }
+    },
+	"workbench.tree.expandMode": "doubleClick",
+    "editor.tokenColorCustomizations": {
+        "[RBLXDark]": {
+            
+            "variables": "#cccccc",
+            "functions": "#77ffff",
+         }
+    },
+    "explorer.compactFolders": false,
+    "gitlens.hovers.currentLine.over": "line",
+    "gitlens.codeLens.scopes": [
+        "document",
+        "containers",
+        "blocks"
+    ],
+    "gitlens.currentLine.enabled": false,
+    "gitlens.hovers.enabled": false,
+    "gitlens.gitCommands.skipConfirmations": [
+        "fetch:command",
+        "stash-push:command",
+        "switch:command",
+        "push:command"
+    ],
+    "workbench.colorCustomizations": {
+
+        "[RBLXDark]": {
+            //"editorError.background": "#ff0000"
+        }
+    
+    },
+	"gitlens.codeLens.enabled": false,
+    "Lua.hover.enable": false,
+    "git.autofetch": true,
+    "files.autoSave": "afterDelay",
+    "editor.insertSpaces": false,
+	"editor.detectIndentation": false,
+	"editor.trimAutoWhitespace": false,
+	"files.autoSaveDelay": 2000,
+	"editor.fontSize": 13.5,
+	//"workbench.iconTheme": "vscode-icons",
+	"workbench.colorTheme": "RBLXDark",
+	//"workbench.iconTheme": "material-icon-theme"
+	"workbench.iconTheme": "vscode-icons",
+	"Lua.diagnostics.ignore": [
+		"ConnectParallel"
+	],
+	"Lua.diagnostics.globals": [
+		"task"
+	],
+	"robloxLsp.diagnostics.disable": [
+		"undefined-type"
+	],
+	"robloxLsp.workspace.preloadFileSize": 700,
+	/*
+	"vsicons.associations.files": [
+        {
+            "icon": "lua_server",
+            "extensions": ["server.lua"],
+            "format": "png"
+        },
+        {
+            "icon": "lua_client",
+            "extensions": ["client.lua"],
+            "format": "png"
+        },
+        {
+            "icon": "lua_module",
+            "extensions": ["lua"],
+            "format": "png"
+        },
+        {
+            "icon": "studio",
+            "extensions": ["rbxlx", "rbxl"],
+            "format": "png"
+        },
+        {
+            "icon": "studiolocked",
+            "extensions": ["rbxlx.lock", "rbxl.lock"],
+            "format": "png"
+        },
+        {
+            "icon": "square",
+            "extensions": ["meta.json"],
+            "format": "png"
+        },
+        {
+            "icon": "gear",
+            "extensions": ["project.json"],
+            "format": "png"
+        },
+        {
+            "icon": "information",
+            "extensions": ["md"],
+            "format": "png"
+        },
+        {
+            "icon": "bullet",
+            "extensions": [".gitignore"],
+            "format": "png"
+        }
+    ],
+    "vsicons.associations.folders": [
+        {
+            "icon": "game",
+            "extensions": ["src"],
+            "format": "png"
+        },
+        {
+            "icon": "serverscriptservice",
+            "extensions": ["ServerScriptService"],
+            "format": "png"
+        },
+        {
+            "icon": "studio",
+            "extensions": ["client", "server"],
+            "format": "png"
+        }
+    ],
+    "vsicons.associations.folderDefault.folder": {
+        "icon": "studio",
+        "format": "png"
+    }
+	*/
+	
+}
