@@ -27,7 +27,14 @@ local UserInputToServer = function(actionName, inputState, inputObject : InputOb
 		UserInputType = inputObject.UserInputType
 	}
 	G.TheeRemoteEvent:FireServer({
-		actionName, inputState, inputObjectTable
+		thee = "control",
+		data = {
+			actionName = actionName,
+			inputState = inputState,
+			inputObject = inputObjectTable,
+			timestamp = G.Time()
+		}
+		
 	})
 	print({
 		actionName, inputState, inputObjectTable

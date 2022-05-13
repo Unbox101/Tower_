@@ -40,7 +40,6 @@ else
 	G.ReplicationFolder = game.ReplicatedStorage:WaitForChild("ReplicationFolder",10)
 end
 
-
 --ECS tables
 G.Systems = {}
 G.Functions = {}
@@ -51,55 +50,39 @@ G.EntityCaches = {
 	Entities = {}
 }
 
+--custom typeof
+G.CrapTypeTable = {}
+function G.BindType(tableIn : table, typeIn)
+	G.CrapTypeTable[tableIn] = typeIn
+end
+function G.TypeOf(thing)
+	if typeof(thing) == "table" then
+		if thing.sType then
+			return "Serialized"
+		end
+		local customType = G.CrapTypeTable[thing]
+		if customType then
+			return customType
+		end
+	end
+	return typeof(thing)
+end
+
 --Soup Mods
 G.Soup.OldCreateEntity = G.Soup.CreateEntity
 G.Soup.CreateEntity = function()
 	local entity = G.Soup.OldCreateEntity()
+	G.CrapTypeTable[entity] = "Entity"
 	G.EntityCaches.Entities[entity] = entity--necessary for serialization. or at least its the only solution i've thought of for now.
 	return entity
 end
 
 G.Soup.OldDeleteEntity = G.Soup.DeleteEntity
 G.Soup.DeleteEntity = function(entity, ...)
+	G.CrapTypeTable[entity] = nil
 	G.EntityCaches.Entities[entity] = nil
 	G.Soup.OldDeleteEntity(entity, ...)
 end
-
-
-
-
-
---custom typeof
-G.types = {
-	"CFrame",
-	"Vector3",
-	"Entity",
-	"Player"
-}
-G.typeDict = {
-	CFrame = 1,
-	Vector3 = 2,
-	Entity = 3,
-	Player = 4
-}
-function G.TypeOf(thing)
-	if typeof(thing) == "table" then
-		if thing.type then
-			return G.types[thing.type]
-		end
-	end
-	if G.EntityCaches.Entities[thing] then
-		return "Entity"
-	end
-	return typeof(thing)
-end
-
-
-
-
-
-
-
 
 --ECS initialization functions
 local RequireComponents = function(folder)

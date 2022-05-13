@@ -1,42 +1,25 @@
 local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Globals"))
 local Soup = G.Soup
 
-
-
+local currentVersion = 4
 
 return function(player : Player)
 	local profile = G.ProfileService.GetPlayerProfileAsync(player)
-	--local playerEntity = Soup.CreateEntity()
+	
+	if profile.Data.version ~= currentVersion then
+		profile.Data.PlayerEntity = nil
+		profile.Data.version = currentVersion
+	end
+	
 	local justLoaded = true
 	local playerEntity = G.ReplicationUtil.FullDeserializeEntity(profile.Data.PlayerEntity)
 	
 	task.spawn(function()
 		while player do
 			task.wait(5)
-			
 			G.Functions.SavePlayer(player, playerEntity)
-			
 		end
 	end)
-	
-	--print("PlayerEntity = ", playerEntity)
-	--profile.Data.PlayerEntity
-	--[=[]]
-	local tempItemEnt = G.Soup.CreateEntity()
-	Soup.CreateComponent(tempItemEnt, "Name", {
-		name = "TEST_ITEM"
-	})
-	Soup.CreateComponent(tempItemEnt, "Serializable")
-	Soup.CreateComponent(tempItemEnt, "Transform", {
-		cframe = CFrame.new()
-	})
-	Soup.CreateComponent(tempItemEnt, "Unique", {})
-	
-	--local playerEntity = G.Functions.LoadPlayer(player)
-	
-	
-	
-	
 	
 	Soup.CreateComponent(playerEntity, "Name", {
 		name = player.DisplayName
@@ -49,10 +32,23 @@ return function(player : Player)
 	})
 	Soup.CreateComponent(playerEntity, "Inventory", {
 		capacity = 9,
-		inventory = {
-			tempItemEnt
-		}
+		inventory = {}
 	})
+	
+	if #playerEntity.Inventory.inventory == 0 then
+		print("no item in inv. making item")
+		local testItem = G.Soup.CreateEntity()
+		G.Soup.CreateComponent(testItem, "Transform", {
+			cframe = CFrame.new(1,2,3)
+		})
+		Soup.CreateComponent(testItem, "Serializable")
+		Soup.CreateComponent(testItem, "Unique", {})
+		Soup.CreateComponent(testItem, "Name",{name = "test item funnie"})
+		table.insert(playerEntity.Inventory.inventory, testItem)
+	else
+		print("test item loaded successfully!")
+	end
+	
 	Soup.CreateComponent(playerEntity, "Replicate",{
 		replicateTo = {player},
 		hasAuthorityOver = {
@@ -67,7 +63,7 @@ return function(player : Player)
 	Soup.CreateComponent(playerEntity, "Player",{
 		userId = player.UserId
 	})
-	]=]
+	
 	player.CharacterAppearanceLoaded:Connect(function(character)
 		--init stuffs
 		local humanoid = character:FindFirstChild("Humanoid")

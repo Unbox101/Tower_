@@ -8,15 +8,12 @@ return function(player : Player, entity)
 		local success, err = pcall(function()
 			fullSave = G.ReplicationUtil.FullSerializeEntity(entity)
 		end)
-		
+		fullSave = G.ReplicationUtil.FullSerializeEntity(entity)
 		if success and profile then
 			profile.Data.PlayerEntity = fullSave
-			--print(profile)
 		else
 			print(err)
 		end
 		
-		
-		--print("FullSave = ", fullSave)
 	end
 end

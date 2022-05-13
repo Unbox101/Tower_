@@ -1,61 +1,6 @@
-local HTTP = game:GetService("HttpService")
-
-local CurrentControlsVersion = 1
-local GlobalVersions = {
-	Controls = 0,
-	UUID = 0,--literally almost never ever ever change this
-	PlayerEntitySave = 0,
-	History = 0,
-	Stats = 0
-}
 
 
 local SETTINGS = {
-
-    ProfileTemplate = {
-		Stats = {
-			LogInTimes = 0,
-		},
-		Cash = 0,
-		Controls = {
-			MainMenu = {
-				name = "Main Menu",
-				key = tostring(Enum.KeyCode.Backquote),
-				modifier = "nil",--tostring(Enum.ModifierKey.Ctrl),
-				priority = 50
-			},
-			Attack = {
-				name = "Attack",
-				key = tostring(Enum.UserInputType.MouseButton1),
-				modifier = "nil",
-				priority = 1
-			},
-			Sprint = {
-				name = "Sprint",
-				key = tostring(Enum.KeyCode.LeftShift),
-				modifier = "nil",
-				priority = 50
-			},
-			ClickDetector = {
-				name = "Click Detector Activation",
-				key = tostring(Enum.UserInputType.MouseButton1),
-				modifier = "nil",
-				priority = 50
-			}
-			
-		},
-		Versions = {
-			Controls = 0,
-			UUID = 0,--literally almost never ever ever change this
-			PlayerEntitySave = 0,
-			History = 0,
-			Stats = 0
-		}
-		
-		
-		
-    },
-
     Products = { -- developer_product_id = function(profile)
         [97662780] = function(profile)
             profile.Data.Cash += 100
@@ -80,30 +25,14 @@ local ProfileService = require(game.ServerScriptService.Server.ProfileService)
 
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
-
 local GameProfileStore = ProfileService.GetProfileStore(
     "PlayerData",
-    SETTINGS.ProfileTemplate
+	{}
 )
 
 local Profiles = {} -- {player = profile, ...}
 
 -- Private Functions -----
-
-
-local function doSomethingWithProfile(player, entireProfile)
-	local profile = entireProfile.Data
-	--[=[]]
-	profile.Stats.LogInTimes += 1
-	if profile.UUID == 0 or profile.UUID == "nil" then
-		profile.UUID = HTTP:GenerateGUID(false)
-	end
-	if player.UserId == 18775569 then
-		profile.UUID = "7de22b77-e554-4720-8b68-8efead5f35f5"
-	end
-	]=]
-end
-
 
 local function PlayerAdded(player)
     local profile = GameProfileStore:LoadProfileAsync("Player_" .. player.UserId)
@@ -116,7 +45,6 @@ local function PlayerAdded(player)
         end)
         if player:IsDescendantOf(Players) == true then
             Profiles[player] = profile
-			doSomethingWithProfile(player, profile)
         else
             profile:Release() -- Player left before the profile loaded
         end
