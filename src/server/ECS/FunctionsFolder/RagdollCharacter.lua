@@ -44,7 +44,6 @@ local ragdollConstraintsTable = {
 }
 
 return function(character)
-	print("ye we got this far")
 	pcall(function() character.Head.face:Destroy() end)
 	
 	for _, v in pairs(character:GetDescendants()) do

@@ -32,7 +32,6 @@ local SerializeFunctions = {
 
 local DeserializeFunctions = {
 	CFrame = function(val)
-		print("deserialize val = ", val)
 		return CFrame.new(table.unpack(val))
 	end,
 	Vector3 = function(val)

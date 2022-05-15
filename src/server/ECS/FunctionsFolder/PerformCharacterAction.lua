@@ -1,13 +1,17 @@
-
 local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Globals"))
 
-G.TheeRemoteEvent.OnServerEvent:Connect(function(stuff)
-	print(stuff)
-	if stuff.thee == "control" then
-		
-	end
-end)
-
-return function(actionData)
-	
+local performAction = function(playerEntity, actionData)
+	print(actionData)
+	print("CompareTime = ", G.Time())
 end
+
+if G.IsServer then
+	G.TheeRemoteEvent.OnServerEvent:Connect(function(player, actionData)
+		if actionData.thee ~= "control" then return end
+		
+		performAction(G.EntityCaches.Players[player], actionData)
+		
+	end)
+end
+
+return performAction

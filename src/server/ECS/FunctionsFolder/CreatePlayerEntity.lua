@@ -33,22 +33,7 @@ return function(player : Player)
 	Soup.CreateComponent(playerEntity, "Inventory", {
 		capacity = 9,
 		inventory = {}
-	})
-	
-	if #playerEntity.Inventory.inventory == 0 then
-		print("no item in inv. making item")
-		local testItem = G.Soup.CreateEntity()
-		G.Soup.CreateComponent(testItem, "Transform", {
-			cframe = CFrame.new(1,2,3)
-		})
-		Soup.CreateComponent(testItem, "Serializable")
-		Soup.CreateComponent(testItem, "Unique", {})
-		Soup.CreateComponent(testItem, "Name",{name = "test item funnie"})
-		table.insert(playerEntity.Inventory.inventory, testItem)
-	else
-		print("test item loaded successfully!")
-	end
-	
+	})	
 	Soup.CreateComponent(playerEntity, "Replicate",{
 		replicateTo = {player},
 		hasAuthorityOver = {

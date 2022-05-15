@@ -26,19 +26,15 @@ local UserInputToServer = function(actionName, inputState, inputObject : InputOb
 		UserInputState = inputObject.UserInputState,
 		UserInputType = inputObject.UserInputType
 	}
-	G.TheeRemoteEvent:FireServer({
+	local finalActionData = {
 		thee = "control",
-		data = {
-			actionName = actionName,
-			inputState = inputState,
-			inputObject = inputObjectTable,
-			timestamp = G.Time()
-		}
-		
-	})
-	print({
-		actionName, inputState, inputObjectTable
-	})
+		actionName = actionName,
+		inputState = inputState,
+		inputObject = inputObjectTable,
+		timestamp = G.Time()
+	}
+	G.TheeRemoteEvent:FireServer(finalActionData)
+	print(finalActionData)
 end
 
 G.ContextActionService:BindAction("PickUp", UserInputToServer, false, Enum.KeyCode.F)
