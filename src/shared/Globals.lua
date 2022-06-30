@@ -1,29 +1,35 @@
 local G = {}
 
---folders
-local SharedFolder = game.ReplicatedStorage:WaitForChild("Shared")
-local ServerFolder = game.ServerScriptService:FindFirstChild("Server")
-
 --roblox services
 G.TextChatService = game:GetService("TextChatService")
 G.ContextActionService = game:GetService("ContextActionService")
 G.CollectionService = game:GetService("CollectionService")
 G.RunService = game:GetService("RunService")
 G.HTTP = game:GetService("HttpService")
+local MemoryStoreService = game:GetService("MemoryStoreService")
 
 --ummmmm name? plz? TODO: needs a name
 G.IsClient = G.RunService:IsClient()
 G.IsServer = G.RunService:IsServer()
+
+--folders
+local SharedFolder = game.ReplicatedStorage:WaitForChild("Shared")
+local ServerFolder
+if G.IsServer then
+	ServerFolder = game.ServerScriptService:FindFirstChild("Server")
+end
+G.ModelsFolder = game.ReplicatedStorage:WaitForChild("Models")
 
 --custom services
 G.Soup = require(script.Parent.Soup)
 G.Enums = require(script.Parent.Enums)
 G.TagService = require(script.Parent.TagService)
 G.DebugDraw = require(script.Parent.DebugDraw).DrawPart
-G.ReplicationUtil = require(script.Parent.ReplicationUtility)
+G.SerializationUtility = require(script.Parent.SerializationUtility)
 if G.IsServer then
 	G.ProfileService = require(ServerFolder.ProfileManager)
 end
+local clientReady
 
 --variables
 local TheeRemoteEvent = game.ReplicatedStorage:FindFirstChild("TheeRemoteEvent") or Instance.new("RemoteEvent", game.ReplicatedStorage)
@@ -32,10 +38,14 @@ G.TheeRemoteEvent = TheeRemoteEvent
 G.SystemChatChannel = G.TextChatService:FindFirstChild("RBXSystem", true)
 G.GeneralChatChannel = G.TextChatService:FindFirstChild("RBXGeneral", true)
 G.SharedECS = SharedFolder.ECS
+G.IsClientReady = false
+G.IsServerReady = false
 if G.IsServer then 
 	G.ServerECS = ServerFolder.ECS
 	G.ReplicationFolder = game.ReplicatedStorage:FindFirstChild("ReplicationFolder") or Instance.new("Folder", game.ReplicatedStorage)
 	G.ReplicationFolder.Name = "ReplicationFolder"
+	--various sorted maps
+	G.GlobalPlayerPosMap = MemoryStoreService:GetSortedMap("GlobalPlayerPosMap")
 else
 	G.ReplicationFolder = game.ReplicatedStorage:WaitForChild("ReplicationFolder",10)
 end
@@ -105,8 +115,9 @@ local RequireFunctions = function(folder)
 end
 --call this at the root of it all, hari satus, at the begining of the game
 --defers initialization of ECS modules. only needed cuz i wanted auto require-ing of Functions,Systems,and Components
+G.Initialized = false
 G.Init = function()
-	G.ReplicationUtil.Init()
+	G.SerializationUtility.Init()
 	RequireFunctions(G.SharedECS)
 	RequireSystems(G.SharedECS)
 	RequireComponents(G.SharedECS)
@@ -115,16 +126,21 @@ G.Init = function()
 		RequireSystems(G.ServerECS)
 		RequireComponents(G.ServerECS)
 	end
+	G.Initialized = true
 end
 
 --global helper functions
+local call = true
 G.Query = function(components, func)
     for _, component in ipairs(G.Soup.GetCollection(components[1])) do
 		local entity = component.Entity
+		call = true
 		for _,v in ipairs(components) do
-			if not entity[v] then continue end
+			if not entity[v] then call = false break end
 		end
-		func(entity)
+		if call then
+			func(entity)
+		end
     end
 end
 
@@ -139,6 +155,12 @@ G.Spawn = function(...)
 	return entityOut
 end
 
+G.Clone = function(thing : Instance, parent : Instance?)
+	local ret = thing:Clone()
+	ret.Parent = parent
+	return ret
+end
+
 G.Time = function()
 	return workspace:GetServerTimeNow()
 end
@@ -148,6 +170,21 @@ G.IfNil = function(value, ifNil)
 		return ifNil
 	end
 	return value
+end
+
+G.DeepKillCopyEntity = function(entityIn)
+	local copy = {}
+	for k,v in pairs(entityIn) do
+		if k == "Entity" then continue end--yup this would crash for cyclic reasons
+		if k == "Stored" then continue end--yup this would crash for cyclic reasons
+		if typeof(k) == "userdata" then continue end--get rid of the collectionIndex
+		if typeof(v) == "table" then
+			copy[k] = G.DeepKillCopyEntity(v)
+		else
+			copy[k] = v
+		end
+	end
+	return copy
 end
 
 return G

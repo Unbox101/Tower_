@@ -3,6 +3,10 @@ local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Gl
 
 local allReplicatedEntities = {}
 
+local replicatedOnClients = {
+	
+}
+
 
 local copyEntity = function(entityIn)
 	local copy = {}
@@ -18,14 +22,20 @@ local copyEntity = function(entityIn)
 	end
 	return copy
 end
-
+--[=[]]
 G.TheeRemoteEvent.OnClientEvent:Connect(function()
 	
 end)
+]=]
+
+
+game.Players.PlayerAdded:Connect(function(player)
+	G.Query({"Replicate", "Unique"}, function(entity)
+		
+	end)
+end)
+
 
 return function(deltaTime)
 	--TODO: todo. this is not done yet
-	G.Query({"Replicate"}, function(entity)
-		
-	end)
 end

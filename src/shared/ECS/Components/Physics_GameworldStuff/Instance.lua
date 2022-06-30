@@ -1,11 +1,12 @@
+local ServerScriptService = game:GetService("ServerScriptService")
 local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Globals"))
 
 G.Soup.ConstructComponent(script.Name, {
 	constructor = function(entity, tuple)
 		
-		tuple.destroyOnRemove = tuple.destroyOnRemove or false
 		assert(tuple.instance, "tuple.instance must not be nil")
-		G.TagService:AddTag(tuple.instance, "entity")
+		tuple.destroyOnRemove = tuple.destroyOnRemove
+		tuple.hidden = tuple.hidden
 		
 		return tuple
 	end,

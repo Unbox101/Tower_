@@ -53,7 +53,7 @@
 	"editor.detectIndentation": false,
 	"editor.trimAutoWhitespace": false,
 	"files.autoSaveDelay": 2000,
-	"editor.fontSize": 13.5,
+	"editor.fontSize": 14,//old was 13.5 cuz im stoopid
 	//"workbench.iconTheme": "vscode-icons",
 	"workbench.colorTheme": "RBLXDark",
 	//"workbench.iconTheme": "material-icon-theme"

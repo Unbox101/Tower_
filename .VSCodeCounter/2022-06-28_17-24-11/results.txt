@@ -1,0 +1,104 @@
+Date : 2022-06-28 17:24:11
+Directory : d:\IMAGESV2\VSCode projects\Tower
+Total : 62 files,  3426 codes, 262 comments, 767 blanks, all 4455 lines
+
+Languages
++----------+------------+------------+------------+------------+------------+
+| language | files      | code       | comment    | blank      | total      |
++----------+------------+------------+------------+------------+------------+
+| Lua      |         60 |      3,390 |        262 |        760 |      4,412 |
+| JSON     |          1 |         32 |          0 |          6 |         38 |
+| Markdown |          1 |          4 |          0 |          1 |          5 |
++----------+------------+------------+------------+------------+------------+
+
+Directories
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                   | files      | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                      |         62 |      3,426 |        262 |        767 |      4,455 |
+| src                                                                                                    |         60 |      3,390 |        262 |        760 |      4,412 |
+| src\client                                                                                             |          3 |        249 |         11 |         80 |        340 |
+| src\server                                                                                             |         36 |      2,424 |        198 |        506 |      3,128 |
+| src\server\ECS                                                                                         |         33 |        493 |         22 |        148 |        663 |
+| src\server\ECS\Components                                                                              |         17 |        121 |          0 |         56 |        177 |
+| src\server\ECS\Components\ItemsAndInventoryStuff                                                       |          5 |         31 |          0 |         16 |         47 |
+| src\server\ECS\Components\Person                                                                       |          5 |         38 |          0 |         17 |         55 |
+| src\server\ECS\FunctionsFolder                                                                         |         11 |        288 |         17 |         59 |        364 |
+| src\server\ECS\FunctionsFolder\ItemStuff                                                               |          4 |         82 |          9 |         15 |        106 |
+| src\server\ECS\Systems                                                                                 |          5 |         84 |          5 |         33 |        122 |
+| src\shared                                                                                             |         21 |        717 |         53 |        174 |        944 |
+| src\shared\ECS                                                                                         |         15 |        316 |         19 |         86 |        421 |
+| src\shared\ECS\Components                                                                              |          9 |         90 |          0 |         36 |        126 |
+| src\shared\ECS\Components\Physics_GameworldStuff                                                       |          2 |         27 |          0 |          9 |         36 |
+| src\shared\ECS\FunctionsFolder                                                                         |          4 |        133 |         15 |         17 |        165 |
+| src\shared\ECS\Systems                                                                                 |          2 |         93 |          4 |         33 |        130 |
++--------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++--------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| filename                                                                                               | language | code       | comment    | blank      | total      |
++--------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+
+| d:\IMAGESV2\VSCode projects\Tower\README.md                                                            | Markdown |          4 |          0 |          1 |          5 |
+| d:\IMAGESV2\VSCode projects\Tower\default.project.json                                                 | JSON     |         32 |          0 |          6 |         38 |
+| d:\IMAGESV2\VSCode projects\Tower\src\client\InstanceInterpolation.lua                                 | Lua      |         52 |          0 |         12 |         64 |
+| d:\IMAGESV2\VSCode projects\Tower\src\client\TempNodeTest.lua                                          | Lua      |         69 |          2 |         24 |         95 |
+| d:\IMAGESV2\VSCode projects\Tower\src\client\start.client.lua                                          | Lua      |        128 |          9 |         44 |        181 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\ActionDictionary.lua                       | Lua      |          8 |          0 |          4 |         12 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\ItemsAndInventoryStuff\HideStoredItems.lua | Lua      |          3 |          0 |          2 |          5 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\ItemsAndInventoryStuff\Inventory.lua       | Lua      |          9 |          0 |          4 |         13 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\ItemsAndInventoryStuff\OpenInventory.lua   | Lua      |          8 |          0 |          4 |         12 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\ItemsAndInventoryStuff\Storable.lua        | Lua      |          3 |          0 |          2 |          5 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\ItemsAndInventoryStuff\Stored.lua          | Lua      |          8 |          0 |          4 |         12 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\Name.lua                                   | Lua      |          8 |          0 |          4 |         12 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\Person\Character.lua                       | Lua      |          3 |          0 |          2 |          5 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\Person\CharacterSettings.lua               | Lua      |          3 |          0 |          2 |          5 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\Person\HumanoidSettings.lua                | Lua      |          9 |          0 |          4 |         13 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\Person\Jump.lua                            | Lua      |          9 |          0 |          4 |         13 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\Person\Player.lua                          | Lua      |         14 |          0 |          5 |         19 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\Replicate.lua                              | Lua      |          9 |          0 |          4 |         13 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\Serializable.lua                           | Lua      |          3 |          0 |          2 |          5 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\SpinForNoReason.lua                        | Lua      |          3 |          0 |          2 |          5 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\Tween.lua                                  | Lua      |          9 |          0 |          4 |         13 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Components\Unique.lua                                 | Lua      |         12 |          0 |          3 |         15 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\FunctionsFolder\CreatePlayerEntity.lua                | Lua      |         81 |          5 |         14 |        100 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\FunctionsFolder\HandleUserInput.lua                   | Lua      |          4 |          0 |          1 |          5 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\FunctionsFolder\ItemStuff\DropEntity.lua              | Lua      |         23 |          3 |          2 |         28 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\FunctionsFolder\ItemStuff\DropSlot1.lua               | Lua      |         18 |          0 |          8 |         26 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\FunctionsFolder\ItemStuff\PlayerPickupEntity.lua      | Lua      |          7 |          0 |          1 |          8 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\FunctionsFolder\ItemStuff\StoreEntity.lua             | Lua      |         34 |          6 |          4 |         44 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\FunctionsFolder\LoadPlayer.lua                        | Lua      |         22 |          0 |          5 |         27 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\FunctionsFolder\OnHumanoidDied.lua                    | Lua      |          4 |          0 |         10 |         14 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\FunctionsFolder\PerformCharacterAction.lua            | Lua      |         10 |          3 |          5 |         18 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\FunctionsFolder\RagdollCharacter.lua                  | Lua      |         69 |          0 |          6 |         75 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\FunctionsFolder\SavePlayer.lua                        | Lua      |         16 |          0 |          3 |         19 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Systems\ApplyTransforms.lua                           | Lua      |         38 |          3 |         13 |         54 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Systems\HandleReplication.lua                         | Lua      |         25 |          2 |         14 |         41 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Systems\ItemPhysics.lua                               | Lua      |          7 |          0 |          4 |         11 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Systems\SetTransformToStoredIn.lua                    | Lua      |          8 |          0 |          1 |          9 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ECS\Systems\SpinForNoReasonSystem.lua                     | Lua      |          6 |          0 |          1 |          7 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ProfileManager.lua                                        | Lua      |        126 |         17 |         47 |        190 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\ProfileService.lua                                        | Lua      |      1,774 |        154 |        299 |      2,227 |
+| d:\IMAGESV2\VSCode projects\Tower\src\server\start.server.lua                                          | Lua      |         31 |          5 |         12 |         48 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\DebugDraw.lua                                             | Lua      |         28 |          0 |          3 |         31 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\Components\Clickable.lua                              | Lua      |         20 |          0 |          5 |         25 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\Components\GuiObjectTag.lua                           | Lua      |          3 |          0 |          2 |          5 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\Components\LocalPos.lua                               | Lua      |          8 |          0 |          4 |         12 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\Components\LocalSize.lua                              | Lua      |          8 |          0 |          4 |         12 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\Components\LocalWithin.lua                            | Lua      |          8 |          0 |          4 |         12 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\Components\Physics_GameworldStuff\Instance.lua        | Lua      |         18 |          0 |          4 |         22 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\Components\Physics_GameworldStuff\Transform.lua       | Lua      |          9 |          0 |          5 |         14 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\Components\Position.lua                               | Lua      |          8 |          0 |          4 |         12 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\Components\Size.lua                                   | Lua      |          8 |          0 |          4 |         12 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\FunctionsFolder\CollisionEverything.lua               | Lua      |         44 |          3 |          6 |         53 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\FunctionsFolder\Guis.lua                              | Lua      |         19 |          0 |          5 |         24 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\FunctionsFolder\PrefabEntityModel.lua                 | Lua      |         14 |          0 |          0 |         14 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\FunctionsFolder\RemoteCall.lua                        | Lua      |         56 |         12 |          6 |         74 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\Systems\ApplyPosSize.lua                              | Lua      |         14 |          0 |          2 |         16 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ECS\Systems\Locals.lua                                    | Lua      |         79 |          4 |         31 |        114 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\Enums.lua                                                 | Lua      |          6 |          0 |          3 |          9 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\Globals.lua                                               | Lua      |        138 |         13 |         19 |        170 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\ReplicationUtility.lua                                    | Lua      |         96 |          4 |         21 |        121 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\Soup.lua                                                  | Lua      |         92 |         16 |         27 |        135 |
+| d:\IMAGESV2\VSCode projects\Tower\src\shared\TagService.lua                                            | Lua      |         41 |          1 |         15 |         57 |
+| Total                                                                                                  |          |      3,426 |        262 |        767 |      4,455 |
++--------------------------------------------------------------------------------------------------------+----------+------------+------------+------------+------------+

@@ -5,10 +5,12 @@ local bulkCFrames = {}
 local bulkMoveThisFrame = false
 
 local ApplyTransforms = function(entity)
-	if entity.Instance then
-		
+	--if entity.Instance then
 		local instanceTuple = entity.Instance
 		local transformTuple = entity.Transform
+		
+		--check if hidden. (As of June 6, 2022 this is only used when storing items in an inventory with the HideStoredItems tag. See CTRL+P "StoreEntity")
+		if instanceTuple.hidden == true then return end
 		
 		local instanceType = (instanceTuple.instance:IsA("BasePart") and 0) or (instanceTuple.instance:IsA("Model") and 1)
 		
@@ -34,11 +36,13 @@ local ApplyTransforms = function(entity)
 		
 		
 		
-	end
+	--end
 end
 
+
+
 return function(deltaTime)
-	G.Query({"Transform"}, ApplyTransforms)
+	G.Query({"Transform", "Instance"}, ApplyTransforms)
 	
 	if bulkMoveThisFrame then
 		workspace:BulkMoveTo(bulkParts, bulkCFrames, Enum.BulkMoveMode.FireCFrameChanged)

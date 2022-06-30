@@ -6,9 +6,9 @@ return function(player : Player, entity)
 		
 		local fullSave = ""
 		local success, err = pcall(function()
-			fullSave = G.ReplicationUtil.FullSerializeEntity(entity)
+			fullSave = G.SerializationUtility.FullSerializeEntity(entity)
 		end)
-		fullSave = G.ReplicationUtil.FullSerializeEntity(entity)
+		fullSave = G.SerializationUtility.FullSerializeEntity(entity)
 		if success and profile then
 			profile.Data.PlayerEntity = fullSave
 		else

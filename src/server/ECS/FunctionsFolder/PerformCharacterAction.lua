@@ -1,8 +1,9 @@
 local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Globals"))
 
 local performAction = function(playerEntity, actionData)
-	print(actionData)
-	print("CompareTime = ", G.Time())
+	--TODO;;;---;;;
+	--print(actionData)
+	--print("CompareTime = ", G.Time())
 end
 
 if G.IsServer then

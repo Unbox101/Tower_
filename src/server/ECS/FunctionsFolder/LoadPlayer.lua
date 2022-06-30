@@ -21,7 +21,7 @@ return function(player : Player)
 	if G.ProfileService then
 		local profile = G.ProfileService.GetPlayerProfileAsync(player)
 		
-		local deadEntity = G.ReplicationUtil.DeserializeEntity(G.HTTP:JSONDecode(profile.Data.PlayerEntity))
+		local deadEntity = G.SerializationUtility.DeserializeEntity(G.HTTP:JSONDecode(profile.Data.PlayerEntity))
 		
 	end
 end

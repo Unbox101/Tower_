@@ -1,5 +1,0 @@
-
-
-return function(inventoryEntity)
-	
-end
