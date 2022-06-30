@@ -94,3 +94,19 @@ G.RunService.RenderStepped:Connect(function(deltaTime)
 	
 	
 end)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+G.RemoteCall.ReadyClient()

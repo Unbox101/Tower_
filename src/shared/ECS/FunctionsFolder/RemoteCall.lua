@@ -2,7 +2,8 @@ local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Gl
 local module = {}
 --set valid functions
 local clientAllowedToCall = {
-	"DropSlot1"
+	"DropSlot1",
+	"ReadyClient"
 }
 local serverAllowedToCall = {
 	"UpdateInventoryGuiSlots",
@@ -10,7 +11,9 @@ local serverAllowedToCall = {
 	
 }
 
-
+G.Functions.ReadyClient = function(playerhuh)
+	print(playerhuh)
+end
 
 G.Functions.GetTestValue = function()
 	return 2337

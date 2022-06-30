@@ -29,7 +29,6 @@ G.SerializationUtility = require(script.Parent.SerializationUtility)
 if G.IsServer then
 	G.ProfileService = require(ServerFolder.ProfileManager)
 end
-local clientReady
 
 --variables
 local TheeRemoteEvent = game.ReplicatedStorage:FindFirstChild("TheeRemoteEvent") or Instance.new("RemoteEvent", game.ReplicatedStorage)
@@ -38,8 +37,7 @@ G.TheeRemoteEvent = TheeRemoteEvent
 G.SystemChatChannel = G.TextChatService:FindFirstChild("RBXSystem", true)
 G.GeneralChatChannel = G.TextChatService:FindFirstChild("RBXGeneral", true)
 G.SharedECS = SharedFolder.ECS
-G.IsClientReady = false
-G.IsServerReady = false
+G.ReadyClients = {}
 if G.IsServer then 
 	G.ServerECS = ServerFolder.ECS
 	G.ReplicationFolder = game.ReplicatedStorage:FindFirstChild("ReplicationFolder") or Instance.new("Folder", game.ReplicatedStorage)

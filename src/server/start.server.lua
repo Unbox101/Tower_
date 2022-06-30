@@ -15,8 +15,7 @@ game.Players.PlayerAdded:Connect(function(player)
 	
 	
 	G.Functions.CreatePlayerEntity(player)
-	local playerEntity = G.EntityCaches.Players[player]
-	G.RemoteCall.UpdateInventoryGuiSlots(player, G.DeepKillCopyEntity(playerEntity.Inventory))
+	
 end)
 
 --save on quit
