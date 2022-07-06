@@ -7,9 +7,9 @@ G.Soup.ConstructComponent(script.Name, {
 		assert(tuple.capacity, "tuple.capacity must not be nil")
 		
 		--MUAHAHAHAHA IM USING A MIXED TABLE AND YOU CANT STOP MEEEEEEEEEEEEE
-		local numericInventory = table.create(tuple.capacity, {})
+		local numericInventory = table.create(tuple.capacity, false)
 		for key, val in pairs(tuple.inventory) do
-			numericInventory[key] = {}
+			numericInventory[key] = false
 		end
 		tuple.inventory = numericInventory
 		

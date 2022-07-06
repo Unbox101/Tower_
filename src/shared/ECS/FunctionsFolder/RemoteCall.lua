@@ -1,22 +1,21 @@
 local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Globals"))
-local module = {}
 --set valid functions
 local clientAllowedToCall = {
-	"DropSlot1",
-	"ReadyClient"
+	"DropAllOneAtATime",
+	"ReadyClient",
+	"RequestSpatialData",
+	"PlayerPickupInstance"
 }
 local serverAllowedToCall = {
 	"UpdateInventoryGuiSlots",
 	"UpdateInventoryGuiItems"
-	
+}
+local clientTwoWays = {
+	"RequestSpatialData"
 }
 
 G.Functions.ReadyClient = function(playerhuh)
-	print(playerhuh)
-end
-
-G.Functions.GetTestValue = function()
-	return 2337
+	G.ReadyClients[playerhuh] = playerhuh
 end
 
 local playerCheck = function(playerIn)
@@ -52,7 +51,6 @@ else
 	remoteFunction = script:WaitForChild("RemoteFunctionCall",10)
 	
 	remoteEvent.OnClientEvent:Connect(function(funcName, ...)
-		print(G.Functions)
 		if G.Functions[funcName] == nil then
 			error("function with name " .. tostring(funcName).. " does not exist!" )
 		end
@@ -74,7 +72,6 @@ if G.IsClient then
 		end
 	end
 	]=]
-	print(G.Functions)
 	--handle Events
 	for _,funcName in pairs(clientAllowedToCall) do
 		G.RemoteCall[funcName] = function(...)
@@ -87,11 +84,10 @@ else
 	for _,funcName in ipairs(serverAllowedToCall) do
 		G.RemoteCall[funcName] = function(player, ...)
 			if not playerCheck(player) then error("player argument must be a player instance!") end
-			print(...)
 			remoteEvent:FireClient(player, funcName, ...)
 		end
 	end
 	--No remote functions to be had here. cuz thats bad juju
 end
 
-return module
+return false

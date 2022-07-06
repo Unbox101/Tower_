@@ -1,5 +1,15 @@
 local G = {}
 
+--basically this entire script is
+--[[
+	1: A list of functions G.Functions
+	2: A list of functions G.Systems (dont ask xd)
+	3: Soup G.Soup @Sona's 135 line ECS library that is simple and I use to create entities
+	4: Components. They don't exist in this module but they exist in Soup. Also used in the creation of entities.
+	5: Everything else is either a random global variable, a roblox service, or a helper function that i didn't want in G.Functions
+]]
+
+
 --roblox services
 G.TextChatService = game:GetService("TextChatService")
 G.ContextActionService = game:GetService("ContextActionService")
@@ -7,6 +17,7 @@ G.CollectionService = game:GetService("CollectionService")
 G.RunService = game:GetService("RunService")
 G.HTTP = game:GetService("HttpService")
 local MemoryStoreService = game:GetService("MemoryStoreService")
+
 
 --ummmmm name? plz? TODO: needs a name
 G.IsClient = G.RunService:IsClient()
@@ -38,6 +49,7 @@ G.SystemChatChannel = G.TextChatService:FindFirstChild("RBXSystem", true)
 G.GeneralChatChannel = G.TextChatService:FindFirstChild("RBXGeneral", true)
 G.SharedECS = SharedFolder.ECS
 G.ReadyClients = {}
+G.Spaces = {}
 if G.IsServer then 
 	G.ServerECS = ServerFolder.ECS
 	G.ReplicationFolder = game.ReplicatedStorage:FindFirstChild("ReplicationFolder") or Instance.new("Folder", game.ReplicatedStorage)
@@ -46,6 +58,9 @@ if G.IsServer then
 	G.GlobalPlayerPosMap = MemoryStoreService:GetSortedMap("GlobalPlayerPosMap")
 else
 	G.ReplicationFolder = game.ReplicatedStorage:WaitForChild("ReplicationFolder",10)
+	G.UserInputService = game:GetService("UserInputService")
+	G.GuiService = game:GetService("GuiService")
+	G.StarterGui = game:GetService("StarterGui")
 end
 
 --ECS tables
@@ -55,7 +70,9 @@ G.EntityCaches = {
 	Players = {},
 	Unique = {},
 	Serializable = {},
-	Entities = {}
+	Entities = {},
+	Instances = {},
+	GuiEntities = {}
 }
 
 --custom typeof
@@ -123,6 +140,18 @@ G.Init = function()
 		RequireFunctions(G.ServerECS)
 		RequireSystems(G.ServerECS)
 		RequireComponents(G.ServerECS)
+	else
+		--init base ui garbage
+		G.MainScreenGui = game.Players.LocalPlayer.PlayerGui:WaitForChild("MainScreenGui", 10)
+		
+		G.MainGuiEntity = G.Soup.CreateEntity()
+		G.Soup.CreateComponent(G.MainGuiEntity, "Frame", {
+			mainUI = true,
+			instance = G.MainScreenGui,
+			size = {0, G.MainScreenGui.AbsoluteSize.X,0,G.MainScreenGui.AbsoluteSize.Y}
+			--globalSize = G.MainScreenGui.AbsoluteSize
+		})
+		require(SharedFolder.ClientGlobals)
 	end
 	G.Initialized = true
 end
@@ -172,7 +201,7 @@ end
 
 G.DeepKillCopyEntity = function(entityIn)
 	local copy = {}
-	for k,v in pairs(entityIn) do
+	for k,v in entityIn do
 		if k == "Entity" then continue end--yup this would crash for cyclic reasons
 		if k == "Stored" then continue end--yup this would crash for cyclic reasons
 		if typeof(k) == "userdata" then continue end--get rid of the collectionIndex
@@ -183,6 +212,38 @@ G.DeepKillCopyEntity = function(entityIn)
 		end
 	end
 	return copy
+end
+
+G.ConstructInstance = function(className : string, instanceData : table)
+	local instance = Instance.new(className)
+	for key, value in pairs(instanceData) do
+		if key == "Parent" then continue end
+		local success,err = pcall(function()
+			instance[key] = value
+		end)
+		if not success then
+			warn(err)
+		end
+	end
+	pcall(function()
+		instance.Active = false
+	end)
+	instance.Parent = instanceData.Parent
+	return instance
+end
+
+G.ConstructEntity = function(entityDataTable : table)
+	local ent = G.Soup.CreateEntity()
+	
+	for componentName, componentData in pairs(entityDataTable) do
+		G.Soup.CreateComponent(ent, componentName, componentData)
+	end
+	
+	return ent
+end
+
+G.NilFunc = function()
+	
 end
 
 return G

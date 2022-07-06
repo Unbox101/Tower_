@@ -9,7 +9,7 @@ return function(itemEntity, cframe)
 	if itemEntity.Stored then
 		local previousInvEnt = itemEntity.Stored.storedIn
 		local previousSlot = itemEntity.Stored.slot
-		previousInvEnt.Inventory.inventory[previousSlot] = nil
+		previousInvEnt.Inventory.inventory[previousSlot] = false
 		if cframe == nil and previousInvEnt.Transform then
 			cframe = previousInvEnt.Transform.cframe + previousInvEnt.Transform.cframe.LookVector * 4-- + Vector3.new(math.random(),math.random(),math.random())
 		end

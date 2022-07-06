@@ -3,9 +3,10 @@ local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Gl
 G.Soup.ConstructComponent(script.Name, {
 	constructor = function(entity, tuple)
 		
-		if entity.Instance then
-			G.TagService:AddTag(entity.Instance.instance, "Storable")
-		end
+		tuple.dynamic = tuple.dynamic
+		tuple.space = tuple.space
+		
+		
 		return tuple
 	end
 })

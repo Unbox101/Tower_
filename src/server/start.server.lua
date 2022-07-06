@@ -7,14 +7,13 @@ G.Init()
 game.Players.CharacterAutoLoads = false
 game.Players.PlayerAdded:Connect(function(player)
 	
-	local testTable = {}
-	testTable[1] = "bagingule"
-	testTable["hand"] = "sword haha"
-	
-	--G.RemoteFunctions.PrintTestNumber(player, testTable)
-	
-	
 	G.Functions.CreatePlayerEntity(player)
+	
+	while not G.ReadyClients[player] do
+		task.wait()
+	end
+	local playerEntity = G.EntityCaches.Players[player]
+	G.RemoteCall.UpdateInventoryGuiSlots(player, G.DeepKillCopyEntity(playerEntity.Inventory))
 	
 end)
 
@@ -42,6 +41,10 @@ G.RunService.Heartbeat:Connect(function(deltaTime)
 	G.Systems.SpinForNoReasonSystem(deltaTime)
 	debug.profileend()
 	
+	debug.profilebegin("spatialPositionSystem")
+	G.Systems.SpatialPositionSystem(deltaTime)
+	debug.profileend()
+	
 	processTime += deltaTime
 	
 	if processTime > processInterval then
@@ -50,5 +53,6 @@ G.RunService.Heartbeat:Connect(function(deltaTime)
 		G.Systems.HandleReplication(deltaTime)
 		debug.profileend()
 	end
+	
 	
 end)

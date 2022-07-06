@@ -8,6 +8,13 @@ G.Soup.ConstructComponent(script.Name, {
 		tuple.destroyOnRemove = tuple.destroyOnRemove
 		tuple.hidden = tuple.hidden
 		
+		G.TagService:AddTag(tuple.instance, "Instance")
+		G.TagService:AddTag(tuple.instance, "Entity")
+		
+		if entity.Storable then
+			G.TagService:AddTag(tuple.instance, "Storable")
+		end
+		G.EntityCaches.Instances[tuple.instance] = entity
 		return tuple
 	end,
 	destructor = function(entity)
@@ -16,6 +23,7 @@ G.Soup.ConstructComponent(script.Name, {
 			print("Destroying instance connected to component")
 			instanceTuple.instance:Destroy()
 		end
+		G.EntityCaches.Instances[instanceTuple.instance] = nil
 	end
 })
 

@@ -8,10 +8,10 @@ local funcs = {
 	)
 		
 	end,
-	constrainToSegment = function (point1, point2, point3)
-		local ba = point2 - point1
-		local t = (point3 - point1):Dot(ba) / ba:Dot(ba)
-		return point1:Lerp(point2, math.clamp(t,0,1));
+	constrainToSegment = function (lineStart : Vector3, lineEnd : Vector3, constrainPoint : Vector3)
+		local ba = lineEnd - lineStart
+		local t = (constrainPoint - lineStart):Dot(ba) / ba:Dot(ba)
+		return lineStart:Lerp(lineEnd, math.clamp(t,0,1));
 	end
 }
 --maths test.

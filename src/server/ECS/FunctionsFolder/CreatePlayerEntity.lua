@@ -15,6 +15,24 @@ local function MakeServerPlayer(player : Player)
 	local justLoaded = true
 	local playerEntity = G.SerializationUtility.FullDeserializeEntity(profile.Data.PlayerEntity)
 	
+	--[=[]]
+	playerEntity = G.Soup.CreateEntity()
+	
+	local newPoopEntity = G.Soup.CreateEntity()
+	Soup.CreateComponent(newPoopEntity, "Smelly", {
+		very = true
+	})
+	Soup.CreateComponent(newPoopEntity, "Transform", {
+		cframe = CFrame.new()
+	})
+	Soup.CreateComponent(newPoopEntity, "Unique", {})
+	Soup.CreateComponent(newPoopEntity, "Inventory", {
+		capacity = 30000,
+		inventory = {}
+	})
+	]=]
+	
+	
 	task.spawn(function()
 		while player do
 			task.wait(5)
@@ -32,7 +50,7 @@ local function MakeServerPlayer(player : Player)
 		anchoredToECS = false
 	})
 	Soup.CreateComponent(playerEntity, "Inventory", {
-		capacity = 3,
+		capacity = 9,
 		inventory = {}
 	})
 	Soup.CreateComponent(playerEntity, "HideStoredItems",{})
@@ -51,7 +69,7 @@ local function MakeServerPlayer(player : Player)
 		userId = player.UserId
 	})
 	
-	player.CharacterAppearanceLoaded:Connect(function(character)
+	player.CharacterAdded:Connect(function(character)
 		--init stuffs
 		local humanoid = character:FindFirstChild("Humanoid")
 		local rootPart = character:FindFirstChild("HumanoidRootPart")

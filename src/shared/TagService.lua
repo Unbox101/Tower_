@@ -1,3 +1,4 @@
+-- a wrapper for CollectionService to cache it and make it just a bit more usable
 local module = {}
 module.__index = module
 
