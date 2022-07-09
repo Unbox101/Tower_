@@ -81,20 +81,18 @@ G.Functions.UpdateInventoryGuiItems = function(inventoryTuple)
 	
 end
 
+
+
 G.RunService.RenderStepped:Connect(function(deltaTime)
 	local mousePos = G.UserInputService:GetMouseLocation()
-	G.Functions.UpdateCursorIcon()
 	
-	G.Systems.ApplyUITransforms(deltaTime)
+	G.ProfileCall("UpdateCursorIcon", G.Functions.UpdateCursorIcon)
+	G.ProfileCall("HighlightInteractablesSystem", G.Systems.HighlightInteractablesSystem, deltaTime)
+	G.ProfileCall("ApplyUITransforms", G.Systems.ApplyUITransforms, deltaTime)
+	G.ProfileCall("HandleGuiConstraints", G.Systems.HandleGuiConstraints, deltaTime)
+	G.ProfileCall("HandleDragging", G.Functions.HandleDragging, mousePos)
+	G.ProfileCall("HandleResizing", G.Functions.HandleResizing, mousePos)
 	
-	debug.profilebegin("highlightInteractablesSystem")
-	G.Systems.HighlightInteractablesSystem(deltaTime)
-	debug.profileend()
-	
-	G.Systems.HandleGuiConstraints(deltaTime)
-	
-	G.Functions.HandleDragging(mousePos)
-	G.Functions.HandleResizing(mousePos)
 end)
 
 
@@ -186,18 +184,23 @@ local maximizeButton = G.ConstructEntity({
 		end
 	},
 	Instance = {
-		instance = G.ConstructInstance("Frame", {
+		instance = G.ConstructInstance("ImageLabel", {
 			Parent = G.MainScreenGui,
 			Name = "maximizeButton",
 			BackgroundColor3 = Color3.fromRGB(78, 131, 149),
 			BorderSizePixel = 0
 		}),
+	},
+	Clickable = {
+		func = function()
+			WindowGroupEntity.GuiGroup.group.Background.GuiTransform.size = G.MainScreenGui.AbsoluteSize
+		end
 	}
 })
 local uiCorner = G.ConstructInstance("UICorner", {
 	Parent = maximizeButton.Instance.instance,
 	Name = "funnie corner",
-	CornerRadius = UDim.new(0.25,0)
+	CornerRadius = UDim.new(1,0)
 	
 })
 
@@ -213,10 +216,16 @@ local settingsButton = G.ConstructEntity({
 		instance = G.ConstructInstance("Frame", {
 			Parent = G.MainScreenGui,
 			Name = "settingsButton",
-			BackgroundColor3 = Color3.fromRGB(29, 29, 29),
+			BackgroundColor3 = Color3.fromRGB(222, 222, 222),
 			BorderSizePixel = 0
 		}),
 	}
+})
+local uiCorner = G.ConstructInstance("UICorner", {
+	Parent = settingsButton.Instance.instance,
+	Name = "funnie corner",
+	CornerRadius = UDim.new(1,0)
+	
 })
 
 local AppList = G.ConstructEntity({
@@ -245,18 +254,20 @@ local AppList = G.ConstructEntity({
 local Resizer = G.ConstructEntity({
 	GuiTransform = {
 		position = Vector2.new(100,100),
-		size = Vector2.new(20, 20),
+		size = Vector2.new(15, 15),
 		override = function(guiTransform)
-			guiTransform.position = WindowTest1.GuiTransform.position + WindowTest1.GuiTransform.size - Vector2.new(10,10)
+			guiTransform.position = WindowTest1.GuiTransform.position + WindowTest1.GuiTransform.size - Vector2.new(15,15)
 		end
 	},
 	Instance = {
-		instance = G.ConstructInstance("Frame", {
+		instance = G.ConstructInstance("ImageLabel", {
 			Parent = G.MainScreenGui,
 			Name = "Resizerrrrr",
-			BackgroundColor3 = Color3.fromRGB(0, 255, 38),
-			BorderColor3 = Color3.fromRGB(64, 64, 64),
-			BorderSizePixel = 0
+			ImageColor3 = Color3.fromRGB(106, 106, 106),
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			Image = G.Textures.RightTriangle,
+			Rotation = -90
 		}),
 	},
 	Resizable = {

@@ -16,7 +16,7 @@ local ApplyTransforms = function(entity)
 		
 		if transformTuple.anchoredToECS == true then
 			if instanceType == 0 then
-				if transformTuple.cframe ~= instanceTuple.instance:GetPivot() then
+				if transformTuple.cframe ~= instanceTuple.instance.CFrame then
 					bulkParts[#bulkParts+1] = instanceTuple.instance
 					bulkCFrames[#bulkCFrames+1] = transformTuple.cframe
 					bulkMoveThisFrame = true

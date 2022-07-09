@@ -54,11 +54,21 @@ G.Spaces = {}
 G.Textures = {
 	MouseIcons = {
 		openHand = "rbxasset://textures/advCursor-openedHand.png",
+		closedHand = "rbxasset://textures/advClosed-hand.png",
 		resizeDiag = "rbxasset://textures/StudioUIEditor/icon_resize3.png",
 		pointer = "rbxasset://textures/Cursors/KeyboardMouse/ArrowCursor.png",
 		default = "rbxasset://textures/Cursors/KeyboardMouse/ArrowFarCursor.png",
 		drag = "rbxasset://textures/Cursors/mouseIconCameraTrack.png",
-	}
+	},
+	MenuStuff = {
+		SettingsCogWheel = "rbxasset://textures/ui/Settings/MenuBarIcons/GameSettingsTab.png",
+		Maximize = "rbxasset://textures/ui/Controls/key_single.png",
+		CloseButton = "rbxasset://textures/ui/CloseButton_dn.png"
+	},
+	Ping = "rbxasset://textures/ui/waypoint.png",
+	Search = "rbxasset://textures/ui/SearchIcon.png",
+	DropDownArrow = "rbxasset://textures/ui/Settings/DropDown/DropDown.png",
+	RightTriangle = "http://www.roblox.com/asset/?id=2952273043"
 	
 }
 G.States = {
@@ -77,6 +87,7 @@ else
 	G.GuiService = game:GetService("GuiService")
 	G.StarterGui = game:GetService("StarterGui")
 	G.Mouse = game.Players.LocalPlayer:GetMouse()
+	G.GuiInset = G.GuiService:GetGuiInset()
 end
 
 --ECS tables
@@ -173,6 +184,13 @@ G.Init = function()
 end
 
 --global helper functions
+
+G.ProfileCall = function(name, func, ...)
+	debug.profilebegin(name)
+	func(...)
+	debug.profileend()
+end
+
 local call = true
 G.Query = function(components, func)
     for _, component in ipairs(G.Soup.GetCollection(components[1])) do

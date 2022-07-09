@@ -33,17 +33,10 @@ end)
 local processInterval = 0.1
 local processTime = 0
 G.RunService.Heartbeat:Connect(function(deltaTime)
-	debug.profilebegin("applyTransforms")
-	G.Systems.ApplyTransforms(deltaTime)
-	debug.profileend()
 	
-	debug.profilebegin("spinForNoReason")
-	G.Systems.SpinForNoReasonSystem(deltaTime)
-	debug.profileend()
-	
-	debug.profilebegin("spatialPositionSystem")
-	G.Systems.SpatialPositionSystem(deltaTime)
-	debug.profileend()
+	G.ProfileCall("ApplyTransforms", G.Systems.ApplyTransforms, deltaTime)
+	G.ProfileCall("SpinForNoReason", G.Systems.SpinForNoReasonSystem, deltaTime)
+	G.ProfileCall("SpatialPositionSystem", G.Systems.SpatialPositionSystem, deltaTime)
 	
 	processTime += deltaTime
 	

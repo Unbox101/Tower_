@@ -6,10 +6,10 @@ local itemInstances = G.TagService:GetTagged("Storable")
 local itemHighlightRayParams = RaycastParams.new()
 itemHighlightRayParams.IgnoreWater = true
 itemHighlightRayParams.FilterType = Enum.RaycastFilterType.Blacklist
-itemHighlightRayParams.FilterDescendantsInstances = G.TagService:GetTagged("Character")
+itemHighlightRayParams.FilterDescendantsInstances = G.TagService:GetTagged("ItemHighlightIgnore")
 
 local highlightInstance = Instance.new("Highlight", game.ReplicatedFirst)
-highlightInstance.DepthMode = Enum.HighlightDepthMode.Occluded
+highlightInstance.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 highlightInstance.FillColor = Color3.fromRGB(169, 169, 169)
 highlightInstance.FillTransparency = 0.5
 
@@ -32,7 +32,7 @@ end
 
 
 return function(deltaTime)
-	itemHighlightRayParams.FilterDescendantsInstances = G.TagService:GetTagged("Character")-- why is this necessary
+	itemHighlightRayParams.FilterDescendantsInstances = G.TagService:GetTagged("ItemHighlightIgnore")-- why is this necessary
 	do--TEMP highlight items
 		currentCamCFrame = game.Workspace.CurrentCamera.CFrame
 		local humanoidRootPart = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
@@ -43,6 +43,8 @@ return function(deltaTime)
 		
 		if not rayResult then rayResult = {Position = mouseToWorldRay.Origin + mouseToWorldRay.Direction * 100} end
 		
+		--local noLineOfSight = workspace:Raycast(humanoidRootPart.Position, (rayResult.Position - humanoidRootPart.Position) / ((rayResult.Position - humanoidRootPart.Position).Unit * 1e-5) , itemHighlightRayParams)
+		
 		local lineStart = currentCamCFrame.Position
 		local lineEnd = rayResult.Position
 		
@@ -52,9 +54,12 @@ return function(deltaTime)
 		
 		local lineConstrainedPoint = G.Functions.CollisionEverything.constrainToSegment(lineStart, lineEnd, constrainPoint)
 		
-		if 
+		local noLineOfSight = workspace:Raycast(humanoidRootPart.Position, (constrainPoint - humanoidRootPart.Position), itemHighlightRayParams)
+		
+		if
+			not noLineOfSight and--must be in line of sight
 			(lineConstrainedPoint - constrainPoint).Magnitude < 3 and --TODO: the 3 here is the "range from the center point of an item to which you can select it for interaction". Some more work needs to be done here involving multiple selection points per item. Meaning each selection point must have some sort of adornee property pointing to the actual entity in question.
-			(humanoidRootPart.Position - nearestInstance:GetPivot().Position).Magnitude < 10
+			(humanoidRootPart.Position - nearestInstance:GetPivot().Position).Magnitude < 10--must be within 10 studs of the player
 		then
 			highlightInstance.Adornee = nearestInstance
 			G.InteractInstance = nearestInstance

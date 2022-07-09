@@ -2,7 +2,7 @@ local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Gl
 
 return function()
 	local mousePos = G.UserInputService:GetMouseLocation()
-	local guiObjectsInteractedWith = game.Players.LocalPlayer.PlayerGui:GetGuiObjectsAtPosition(mousePos.X - G.GuiService:GetGuiInset().X, mousePos.Y - G.GuiService:GetGuiInset().Y)
+	local guiObjectsInteractedWith = game.Players.LocalPlayer.PlayerGui:GetGuiObjectsAtPosition(mousePos.X - G.GuiInset.X, mousePos.Y - G.GuiInset.Y)
 	for i, guiInstance in ipairs(guiObjectsInteractedWith) do
 		local guiEntity = G.EntityCaches.Instances[guiInstance]
 		if not guiEntity then return end
