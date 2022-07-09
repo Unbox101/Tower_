@@ -4,7 +4,7 @@ local G = {}
 --[[
 	1: A list of functions G.Functions
 	2: A list of functions G.Systems (dont ask xd)
-	3: Soup G.Soup @Sona's 135 line ECS library that is simple and I use to create entities
+	3: Soup G.Soup @Sona's 135 line simple EC without the S library that I use to create entities
 	4: Components. They don't exist in this module but they exist in Soup. Also used in the creation of entities.
 	5: Everything else is either a random global variable, a roblox service, or a helper function that i didn't want in G.Functions
 ]]
@@ -37,6 +37,7 @@ G.Enums = require(script.Parent.Enums)
 G.TagService = require(script.Parent.TagService)
 G.DebugDraw = require(script.Parent.DebugDraw).DrawPart
 G.SerializationUtility = require(script.Parent.SerializationUtility)
+G.MoreMath = require(script.Parent.MoreMath)
 if G.IsServer then
 	G.ProfileService = require(ServerFolder.ProfileManager)
 end
@@ -50,6 +51,20 @@ G.GeneralChatChannel = G.TextChatService:FindFirstChild("RBXGeneral", true)
 G.SharedECS = SharedFolder.ECS
 G.ReadyClients = {}
 G.Spaces = {}
+G.Textures = {
+	MouseIcons = {
+		openHand = "rbxasset://textures/advCursor-openedHand.png",
+		resizeDiag = "rbxasset://textures/StudioUIEditor/icon_resize3.png",
+		pointer = "rbxasset://textures/Cursors/KeyboardMouse/ArrowCursor.png",
+		default = "rbxasset://textures/Cursors/KeyboardMouse/ArrowFarCursor.png",
+		drag = "rbxasset://textures/Cursors/mouseIconCameraTrack.png",
+	}
+	
+}
+G.States = {
+	DragginEntities = {},
+	ResizinEntities = {}
+}
 if G.IsServer then 
 	G.ServerECS = ServerFolder.ECS
 	G.ReplicationFolder = game.ReplicatedStorage:FindFirstChild("ReplicationFolder") or Instance.new("Folder", game.ReplicatedStorage)
@@ -61,6 +76,7 @@ else
 	G.UserInputService = game:GetService("UserInputService")
 	G.GuiService = game:GetService("GuiService")
 	G.StarterGui = game:GetService("StarterGui")
+	G.Mouse = game.Players.LocalPlayer:GetMouse()
 end
 
 --ECS tables

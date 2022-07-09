@@ -3,7 +3,7 @@ local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Gl
 G.Soup.ConstructComponent(script.Name, {
 	constructor = function(entity, tuple)
 		
-		assert(tuple.parent, "tuple.parent must not be nil")
+		assert(tuple.func, "tuple.func must not be nil")
 		
 		return tuple
 	end

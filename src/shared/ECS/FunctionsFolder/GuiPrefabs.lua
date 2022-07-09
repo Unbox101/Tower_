@@ -1,5 +1,10 @@
 local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Globals"))
 
-G.Soup.ConstructComponent(script.Name, {})
+
+G.GuiPrefabs = {}
+
+G.GuiPrefabs.MakeWindow = function()
+	
+end
 
 return false

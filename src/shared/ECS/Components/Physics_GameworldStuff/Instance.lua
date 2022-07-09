@@ -5,7 +5,8 @@ G.Soup.ConstructComponent(script.Name, {
 	constructor = function(entity, tuple)
 		
 		assert(tuple.instance, "tuple.instance must not be nil")
-		tuple.destroyOnRemove = tuple.destroyOnRemove
+		--tuple.destroyOnRemove = tuple.destroyOnRemove
+		tuple.destroyOnRemove = true
 		tuple.hidden = tuple.hidden
 		
 		G.TagService:AddTag(tuple.instance, "Instance")
@@ -20,7 +21,6 @@ G.Soup.ConstructComponent(script.Name, {
 	destructor = function(entity)
 		local instanceTuple = entity.Instance
 		if instanceTuple.destroyOnRemove then
-			print("Destroying instance connected to component")
 			instanceTuple.instance:Destroy()
 		end
 		G.EntityCaches.Instances[instanceTuple.instance] = nil

@@ -20,6 +20,9 @@ G.Soup.ConstructComponent(script.Name, {
 		
 		tuple.anchorPoint = tuple.anchorPoint or Vector2.zero
 		
+		tuple.posBoundsParent = tuple.posBoundsParent
+		tuple.sizeBoundsParent = tuple.sizeBoundsParent
+		
 		assert(tuple.instance, "tuple.instance must not be nil!")
 		
 		if not tuple.mainUI then
