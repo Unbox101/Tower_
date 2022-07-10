@@ -3,6 +3,8 @@ local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Gl
 
 G.GuiPrefabs = {}
 
+
+
 G.GuiPrefabs.MakeWindow = function()
 	local WindowGroupEntity = G.Soup.CreateEntity()
 	

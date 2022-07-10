@@ -2,36 +2,50 @@ local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Gl
 
 local dropRayParams = RaycastParams.new()
 dropRayParams.FilterType = Enum.RaycastFilterType.Blacklist
-dropRayParams.FilterDescendantsInstances = G.TagService:GetTagged("Character")
+dropRayParams.FilterDescendantsInstances = G.TagService:GetTagged("ItemHighlightIgnore")
 
 
 
-return function(player, clientRootPos, dropSpot)
+return function(player, clientRootPos, dropPoint)
 	
 	--local finalDropCFrame = clientCFrame
 	local playerEntity = G.EntityCaches.Players[player]
 	--local itemEntity = playerEntity.Inventory.inventory[1]
 	
-	dropRayParams.FilterDescendantsInstances = G.TagService:GetTagged("RayIgnore")
-	local playerPos = playerEntity.Transform.cframe.Position
-	local rayStart = clientRootPos
-	if (clientRootPos-playerPos).Magnitude > 2 then
-		rayStart = playerPos
+	dropRayParams.FilterDescendantsInstances = G.TagService:GetTagged("ItemHighlightIgnore")
+	local playerPos = playerEntity.Transform.cframe.Position--server player pos
+	
+	
+	local clientDropSpot =  workspace:Raycast(clientRootPos, (dropPoint - clientRootPos).Unit * 5, dropRayParams)
+	local serverDropSpot = workspace:Raycast(playerPos, (dropPoint - playerPos).Unit * 5, dropRayParams)
+	
+	clientDropSpot = clientDropSpot or {Position = clientRootPos + (dropPoint - clientRootPos).Unit * 5}
+	serverDropSpot = serverDropSpot or {Position = playerPos + (dropPoint - playerPos).Unit * 5}
+	
+	clientDropSpot = clientDropSpot.Position
+	serverDropSpot = serverDropSpot.Position
+	
+	local vel = playerEntity.Instance.instance.HumanoidRootPart.AssemblyLinearVelocity
+	local unit = vel.Unit
+	if vel.X == 0 and vel.Y == 0 and vel.Z == 0 then
+		unit = Vector3.zero
 	end
 	
-	local rayResult = workspace:Raycast(rayStart, (dropSpot-rayStart).Unit * 5, dropRayParams)
-	if rayResult then
-		dropSpot = rayResult.Position
-	else
-		
-		dropSpot = rayStart + (dropSpot-rayStart).Unit * 5
-	end
+	
+	clientDropSpot = clientDropSpot + unit
+	
+	print(clientDropSpot, ":" , serverDropSpot)
+	
+
+	local clientToServerValidRay = workspace:Raycast(serverDropSpot, (clientDropSpot - serverDropSpot), dropRayParams)
+	clientToServerValidRay = clientToServerValidRay or {Position =  serverDropSpot + (clientDropSpot - serverDropSpot)}
+	serverDropSpot = clientToServerValidRay.Position
 	
 	local actuallyDroppedAnything = false
 	
 	for i,itemEntity in pairs(playerEntity.Inventory.inventory) do
 		if itemEntity then--TODO: fix this
-			actuallyDroppedAnything = G.Functions.DropEntity(itemEntity, CFrame.new(dropSpot))
+			actuallyDroppedAnything = G.Functions.DropEntity(itemEntity, CFrame.new(serverDropSpot))
 			break
 		end
 	end

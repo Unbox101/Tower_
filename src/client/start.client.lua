@@ -6,7 +6,7 @@ require(script.Parent.InstanceInterpolation)
 local UserInputToServer = function(actionName, inputState, inputObject : InputObject)
 	
 	if actionName == "Drop" and inputObject.UserInputState == Enum.UserInputState.Begin then
-		G.RemoteCall.DropAllOneAtATime(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, G.GetMouseHitPos(50))
+		G.RemoteCall.DropAllOneAtATime(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, G.GetMouseHitPos(100))--WARNING: This value must at minimum be the cameras distance from the player and the ground they are looking at
 	elseif actionName == "PickUp" and inputObject.UserInputState == Enum.UserInputState.Begin then
 		G.RemoteCall.PlayerPickupInstance(G.InteractInstance)
 	elseif actionName == "GuiInteract" and inputObject.UserInputState == Enum.UserInputState.Begin then
@@ -97,7 +97,9 @@ end)
 
 
 
-G.GuiPrefabs.MakeWindow()
+local LodeStarGuiGroup = G.GuiPrefabs.MakeWindow()
+
+
 
 --[=[]]
 --make ui mumbo jumbo

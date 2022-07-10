@@ -35,7 +35,7 @@ G.ModelsFolder = game.ReplicatedStorage:WaitForChild("Models")
 G.Soup = require(script.Parent.Soup)
 G.Enums = require(script.Parent.Enums)
 G.TagService = require(script.Parent.TagService)
-G.DebugDraw = require(script.Parent.DebugDraw).DrawPart
+G.DebugDraw = require(script.Parent.DebugDraw)
 G.SerializationUtility = require(script.Parent.SerializationUtility)
 G.MoreMath = require(script.Parent.MoreMath)
 if G.IsServer then
