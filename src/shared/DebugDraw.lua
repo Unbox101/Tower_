@@ -7,8 +7,8 @@ local function DrawPart(tuple)
 	part.Name = tuple.Name or "DebugPrintPart"
 	part.Size = tuple.Size or Vector3.new(0.5,0.5,0.5)
 	part.Color = tuple.Color or Color3.new(1,1,1)
-	part.Shape = tuple.Shape or Enum.PartType.Ball
-	part.Material = Enum.Material.Neon
+	part.Shape = tuple.Shape or Enum.PartType.Block
+	part.Material = tuple.Material or Enum.Material.Neon
 	if tuple.Position ~= nil then
 		tuple.CFrame = CFrame.new(tuple.Position)
 	end

@@ -3,24 +3,93 @@ local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Gl
 G.Init()
 require(script.Parent.InstanceInterpolation)
 
+local StarterGui = game:GetService("StarterGui")
+StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
+StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, true)
+--StarterGui:SetCore("ResetButtonCallback", false)
+
+local LodeStarGuiGroup
+local Controls = {
+	--[=[]]
+	{
+		ActionName = "Nothing",
+		Keys = {},
+		Begin = function()end,
+		Changed = function()end,
+		End = function()end
+	},
+	]=]
+	{
+		ActionName = "Drop",
+		Keys = {Enum.KeyCode.Q},
+		Begin = function()
+			G.RemoteCall.DropAllOneAtATime(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, G.GetMouseHitPos(100))
+		end
+	},
+	{
+		ActionName = "PickUp",
+		Keys = {Enum.KeyCode.E},
+		Begin = function()
+			G.RemoteCall.PlayerPickupInstance(G.InteractInstance)
+		end
+	},
+	{
+		ActionName = "GuiInteract1",
+		Keys = {Enum.UserInputType.MouseButton1},
+		Begin = function()
+			G.Functions.GuiInteract1Begin()
+		end,
+		End = function()
+			G.Functions.GuiInteract1End()
+		end
+	},
+	{
+		ActionName = "GuiInteract2",
+		Keys = {Enum.UserInputType.MouseButton2},
+		Begin = function()
+			G.Functions.GuiInteract2Begin()
+		end,
+		End = function()
+			G.Functions.GuiInteract2End()
+		end
+	},
+	{
+		ActionName = "OpenBoundLodestar",
+		Keys = {Enum.KeyCode.Tab},
+		Begin = function()
+			
+		end,
+		End = function()
+			G.Functions.ToggleGuiVisibility(LodeStarGuiGroup)
+		end
+	}
+	
+	
+	
+}
+
 local UserInputToServer = function(actionName, inputState, inputObject : InputObject)
 	
-	if actionName == "Drop" and inputObject.UserInputState == Enum.UserInputState.Begin then
-		G.RemoteCall.DropAllOneAtATime(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, G.GetMouseHitPos(100))--WARNING: This value must at minimum be the cameras distance from the player and the ground they are looking at
-	elseif actionName == "PickUp" and inputObject.UserInputState == Enum.UserInputState.Begin then
-		G.RemoteCall.PlayerPickupInstance(G.InteractInstance)
-	elseif actionName == "GuiInteract" and inputObject.UserInputState == Enum.UserInputState.Begin then
-		G.Functions.GuiInteract()
-	elseif actionName == "GuiInteract" and inputObject.UserInputState == Enum.UserInputState.End then
-		G.Functions.GuiInteractRelease()
+	for i,v in ipairs(Controls) do
+		if v.ActionName == actionName then
+			if inputState == Enum.UserInputState.Begin then
+				if v.Begin then
+					v.Begin(inputObject)
+				end
+			elseif inputState == Enum.UserInputState.End then
+				if v.End then
+					v.End(inputObject)
+				end
+			end
+		end
 	end
 	
 	return Enum.ContextActionResult.Pass
 end
 
-G.ContextActionService:BindAction("PickUp", UserInputToServer, false, Enum.KeyCode.E)
-G.ContextActionService:BindAction("Drop", UserInputToServer, false, Enum.KeyCode.Q)
-G.ContextActionService:BindAction("GuiInteract", UserInputToServer, false, Enum.UserInputType.MouseButton1)
+for _, ActionDict in ipairs(Controls) do
+	G.ContextActionService:BindActionAtPriority(ActionDict.ActionName, UserInputToServer, false, 5000, table.unpack(ActionDict.Keys))
+end
 
 require(script.Parent.TempNodeTest)
 
@@ -33,7 +102,7 @@ viewportCam.FieldOfView = 50
 
 local inventoryEntity = G.Soup.CreateEntity()
 G.Soup.CreateComponent(inventoryEntity, "InventoryGui", {
-	gui = G.MainScreenGui.InvFrame,
+	gui = G.MainScreenGui:FindFirstChild("InvFrame",true),
 	inventoryCopy = {}
 })
 G.Functions.UpdateInventoryGuiSlots = function(inventoryTuple)
@@ -84,9 +153,14 @@ end
 
 
 G.RunService.RenderStepped:Connect(function(deltaTime)
-	local mousePos = G.UserInputService:GetMouseLocation()
 	
-	G.ProfileCall("UpdateCursorIcon", G.Functions.UpdateCursorIcon)
+	--now i can sleep at night
+	local mousePos = G.UserInputService:GetMouseLocation()
+	local guiObjectsInteractedWith = game.Players.LocalPlayer.PlayerGui:GetGuiObjectsAtPosition(mousePos.X - G.GuiInset.X, mousePos.Y - G.GuiInset.Y)
+	
+	--run systems
+	G.ProfileCall("HandleDeleteOnMouseLeave", G.Functions.HandleDeleteOnMouseLeave, mousePos, guiObjectsInteractedWith)
+	G.ProfileCall("UpdateMouseIcon", G.Functions.UpdateMouseIcon, mousePos, guiObjectsInteractedWith)
 	G.ProfileCall("HighlightInteractablesSystem", G.Systems.HighlightInteractablesSystem, deltaTime)
 	G.ProfileCall("ApplyUITransforms", G.Systems.ApplyUITransforms, deltaTime)
 	G.ProfileCall("HandleGuiConstraints", G.Systems.HandleGuiConstraints, deltaTime)
@@ -97,8 +171,58 @@ end)
 
 
 
-local LodeStarGuiGroup = G.GuiPrefabs.MakeWindow()
+LodeStarGuiGroup = G.GuiPrefabs.MakeLodestarGui()
 
+--G.Soup.CreateComponent(LodeStarGuiGroup.Background, "GuiInteractable1", {})
+--G.Soup.CreateComponent(LodeStarGuiGroup.Background, "OpenMenu", {})
+--[=[]]
+LodeStarGuiGroup["AppList"] = G.ConstructEntity({
+	GuiTransform = {
+		size = Vector2.new(200, -20),
+		position = Vector2.new(0, 20)
+	},
+	GuiLocalTransform = {
+		parent = LodeStarGuiGroup.background,
+		localSize = Vector2.new(0,1),
+	},
+	Instance = {
+		instance = G.ConstructInstance("ScrollingFrame", {
+			Parent = G.MainScreenGui,
+			Name = "sideBar/appExplorer",
+			BackgroundColor3 = Color3.fromRGB(32, 32, 32),
+			BorderColor3 = Color3.fromRGB(64, 64, 64),
+			BorderSizePixel = 0
+		}),
+	}
+})
+
+
+
+LodeStarGuiGroup.thisgonnasuck = G.ConstructEntity({
+	GuiTransform = {
+		size = Vector2.new(20,20),
+		override = function(guiTransform)
+			local contentGuiTransform = LodeStarGuiGroup.contentFrame.GuiTransform
+			guiTransform.position = contentGuiTransform.position + Vector2.new(contentGuiTransform.size.X, 0)
+		end
+	},
+	GuiLocalTransform = {
+		parent = LodeStarGuiGroup.topBar,
+		localPos = Vector2.new(1,0),
+	},
+	Instance = {
+		instance = G.ConstructInstance("Frame", {
+			Parent = G.MainScreenGui,
+			Name = "test",
+			BackgroundColor3 = Color3.fromRGB(0, 195, 255),
+			BorderColor3 = Color3.fromRGB(37, 37, 37),
+			BorderSizePixel = 2,
+			BorderMode = Enum.BorderMode.Inset
+		}),
+	},
+	
+})
+]=]
 
 
 --[=[]]

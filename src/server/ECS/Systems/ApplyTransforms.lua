@@ -14,7 +14,7 @@ local ApplyTransforms = function(entity)
 		
 		local instanceType = (instanceTuple.instance:IsA("BasePart") and 0) or (instanceTuple.instance:IsA("Model") and 1)
 		
-		if transformTuple.anchoredToECS == true then
+		if transformTuple.anchoredToECS then
 			if instanceType == 0 then
 				if transformTuple.cframe ~= instanceTuple.instance.CFrame then
 					bulkParts[#bulkParts+1] = instanceTuple.instance
@@ -40,9 +40,15 @@ local ApplyTransforms = function(entity)
 end
 
 
-
 return function(deltaTime)
 	G.Query({"Transform", "Instance"}, ApplyTransforms)
+	--[=[]]
+	for _, Entity in ipairs(G.Soup.GetCollection({"Transform"})) do
+		if Entity.Instance then
+			ApplyTransforms(Entity)
+		end
+	end
+	]=]
 	
 	if bulkMoveThisFrame then
 		workspace:BulkMoveTo(bulkParts, bulkCFrames, Enum.BulkMoveMode.FireCFrameChanged)

@@ -30,9 +30,7 @@ end)
 
 
 game.Players.PlayerAdded:Connect(function(player)
-	G.Query({"Replicate", "Unique"}, function(entity)
-		
-	end)
+	
 end)
 
 

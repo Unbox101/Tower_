@@ -34,7 +34,6 @@ return function(player, clientRootPos, dropPoint)
 	
 	clientDropSpot = clientDropSpot + unit
 	
-	print(clientDropSpot, ":" , serverDropSpot)
 	
 
 	local clientToServerValidRay = workspace:Raycast(serverDropSpot, (clientDropSpot - serverDropSpot), dropRayParams)
@@ -44,7 +43,7 @@ return function(player, clientRootPos, dropPoint)
 	local actuallyDroppedAnything = false
 	
 	for i,itemEntity in pairs(playerEntity.Inventory.inventory) do
-		if itemEntity then--TODO: fix this
+		if itemEntity then--TODO: fix this. Related to itemEntity = false instead of nil or {an item}
 			actuallyDroppedAnything = G.Functions.DropEntity(itemEntity, CFrame.new(serverDropSpot))
 			break
 		end

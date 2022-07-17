@@ -11,7 +11,7 @@ G.Soup.ConstructComponent(script.Name, {
 		
 		return tuple
 	end,
-	destructor = function(entity)
+	destructor = function(entity, tuple)
 		G.EntityCaches.Players[entity.Player.player] = nil
 	end
 })

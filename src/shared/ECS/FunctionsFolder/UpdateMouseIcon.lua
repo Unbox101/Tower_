@@ -13,12 +13,17 @@ local IconTable = {
 	["Resizable"] = G.Textures.MouseIcons.resizeDiag,
 	["Clickable"] = G.Textures.MouseIcons.pointer
 }
+local IconCapacitors = {}
+for key in pairs(IconTable) do
+	IconCapacitors[key] = 0
+end
+local MaxIconCapacitorCharge = 5
 local rayResult = nil--{Instance = G.Mouse.Target}
-return function()
+return function(mousePos, guiObjectsInteractedWith)
 	cursorRaycastParams.FilterDescendantsInstances = G.TagService:GetTagged("Character")
 	G.Mouse.Icon = G.Textures.MouseIcons.default--set to default at beginning of frame
 	
-	local mousePos = G.UserInputService:GetMouseLocation()
+	--local mousePos = G.UserInputService:GetMouseLocation()
 	local mouseToWorldRay = workspace.CurrentCamera:ViewportPointToRay(mousePos.X, mousePos.Y)
 	
 	--rayResult.Instance = G.Mouse.Target
@@ -32,17 +37,32 @@ return function()
 		end
 	end
 	
-	local guiObjectsInteractedWith = game.Players.LocalPlayer.PlayerGui:GetGuiObjectsAtPosition(mousePos.X - G.GuiInset.X, mousePos.Y - G.GuiInset.Y)
+	--local guiObjectsInteractedWith = game.Players.LocalPlayer.PlayerGui:GetGuiObjectsAtPosition(mousePos.X - G.GuiInset.X, mousePos.Y - G.GuiInset.Y)
 	for i, guiInstance in ipairs(guiObjectsInteractedWith) do
 		
 		local guiEntity = G.EntityCaches.Instances[guiInstance]
 		if not guiEntity then return end
 		
-		for component, textureID in pairs(IconTable) do
+		--long story short, in order for Mouse.Icon to change, you must hover over something for X frames.
+		for component in pairs(IconCapacitors) do
 			if guiEntity[component] then
-				G.Mouse.Icon = textureID
+				if IconCapacitors[component] < MaxIconCapacitorCharge then
+					IconCapacitors[component] += 1
+				end
+			else
+				if IconCapacitors[component] > 0 then
+					IconCapacitors[component] -= 1
+				end
 			end
 		end
 		break
 	end
+	
+	
+	for key, charge in pairs(IconCapacitors) do
+		if charge >= MaxIconCapacitorCharge then
+			G.Mouse.Icon = IconTable[key]
+		end
+	end
+	
 end

@@ -2,11 +2,9 @@ local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Gl
 
 G.Soup.ConstructComponent(script.Name, {
 	constructor = function(entity, tuple)
-		tuple.position = tuple.position or Vector2.zero
-		tuple.size = tuple.size or Vector2.zero
 		
-		tuple.absolutePos = tuple.position
-		tuple.absoluteSize = tuple.size
+		assert(tuple.mouseLeaveAdornee, "tuple.mouseLeaveAdornee must not be nil")
+		assert(tuple.deleteAdornee, "tuple.deleteAdornee must not be nil")
 		
 		return tuple
 	end

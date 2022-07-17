@@ -2,7 +2,7 @@ local Players = game:GetService("Players")
 local G = require(game.ReplicatedStorage:WaitForChild("Shared"):WaitForChild("Globals"))
 local Soup = G.Soup
 
-local currentVersion = 4
+local currentVersion = 5
 
 local function MakeServerPlayer(player : Player)
 	local profile = G.ProfileService.GetPlayerProfileAsync(player)
@@ -11,46 +11,32 @@ local function MakeServerPlayer(player : Player)
 		profile.Data.PlayerEntity = nil
 		profile.Data.version = currentVersion
 	end
-	
 	local justLoaded = true
-	local playerEntity = G.SerializationUtility.FullDeserializeEntity(profile.Data.PlayerEntity)
-	
-	--[=[]]
-	playerEntity = G.Soup.CreateEntity()
-	
-	local newPoopEntity = G.Soup.CreateEntity()
-	Soup.CreateComponent(newPoopEntity, "Smelly", {
-		very = true
-	})
-	Soup.CreateComponent(newPoopEntity, "Transform", {
-		cframe = CFrame.new()
-	})
-	Soup.CreateComponent(newPoopEntity, "Unique", {})
-	Soup.CreateComponent(newPoopEntity, "Inventory", {
-		capacity = 30000,
-		inventory = {}
-	})
-	]=]
-	
+	local playerEntity = G.Soup.CreateEntity()--G.SerializationUtility.FullDeserializeEntity(profile.Data.PlayerEntity)
 	
 	task.spawn(function()
 		while player do
-			task.wait(5)
+			task.wait(10)
 			G.Functions.SavePlayer(player, playerEntity)
 		end
 	end)
+	--[=[]]
+	playerEntity += {"Name", {
+		name = player.DisplayName
+	}}
+	]=]
 	
-	Soup.CreateComponent(playerEntity, "Name", {
+	G.Soup.CreateComponent(playerEntity, "Name", {
 		name = player.DisplayName
 	})
-	Soup.CreateComponent(playerEntity, "Unique", {})
-	Soup.CreateComponent(playerEntity, "Serializable")
-	Soup.CreateComponent(playerEntity, "Transform", {
+	G.Soup.CreateComponent(playerEntity, "Unique", {})
+	G.Soup.CreateComponent(playerEntity, "Serializable")
+	G.Soup.CreateComponent(playerEntity, "Transform", {
 		cframe = CFrame.new(0,10,0),
 		anchoredToECS = false
 	})
-	Soup.CreateComponent(playerEntity, "Inventory", {
-		capacity = 9,
+	G.Soup.CreateComponent(playerEntity, "Inventory", {
+		capacity = 9*2,
 		inventory = {}
 	})
 	Soup.CreateComponent(playerEntity, "HideStoredItems",{})
@@ -85,14 +71,7 @@ local function MakeServerPlayer(player : Player)
 		
 		--handle on died
 		humanoid.Died:Connect(function()
-			G.Functions.SavePlayer(player, playerEntity)
-			task.delay(3, function()
-				player:LoadCharacter()
-			end)
-			G.Functions.RagdollCharacter(character)
-			Soup.DeleteComponent(playerEntity, "Character")
-			Soup.DeleteComponent(playerEntity, "Instance")
-			
+			G.Functions.PlayerEntityDied(player)
 		end)
 		--make character only stuff
 		Soup.CreateComponent(playerEntity, "Character", {})

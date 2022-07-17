@@ -18,6 +18,7 @@ local tempGetNearestInstance = function(instanceList, point : Vector3)
 	local nearestInstance = instanceList[1]
 	
 	for _,instance in ipairs(instanceList) do
+		if not instance:IsDescendantOf(workspace) then continue end
 		local nearestDistCandidate = (instance:GetPivot().Position - point).Magnitude
 		if nearestDistCandidate < nearestDist then
 			nearestInstance = instance

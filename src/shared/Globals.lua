@@ -9,7 +9,6 @@ local G = {}
 	5: Everything else is either a random global variable, a roblox service, or a helper function that i didn't want in G.Functions
 ]]
 
-
 --roblox services
 G.TextChatService = game:GetService("TextChatService")
 G.ContextActionService = game:GetService("ContextActionService")
@@ -31,8 +30,13 @@ if G.IsServer then
 end
 G.ModelsFolder = game.ReplicatedStorage:WaitForChild("Models")
 
+--Soup Imports
+G.ArchSoup = require(script.Parent.ArchSoup)
+G.EC = require(script.Parent.EC)
+G.DefaultSoup = require(script.Parent.Soup)
+G.Soup = G.DefaultSoup--require(script.Parent.EC)
+
 --custom services
-G.Soup = require(script.Parent.Soup)
 G.Enums = require(script.Parent.Enums)
 G.TagService = require(script.Parent.TagService)
 G.DebugDraw = require(script.Parent.DebugDraw)
@@ -73,7 +77,8 @@ G.Textures = {
 }
 G.States = {
 	DragginEntities = {},
-	ResizinEntities = {}
+	ResizinEntities = {},
+	IconCapacitors = {}
 }
 if G.IsServer then 
 	G.ServerECS = ServerFolder.ECS
@@ -101,6 +106,7 @@ G.EntityCaches = {
 	Instances = {},
 	GuiEntities = {}
 }
+G.MarkedForDelete = {}
 
 --custom typeof
 G.CrapTypeTable = {}
@@ -121,6 +127,9 @@ function G.TypeOf(thing)
 end
 
 --Soup Mods
+G.Soup.Add = G.Soup.CreateComponent
+G.Soup.Remove = G.Soup.DeleteComponent
+
 G.Soup.OldCreateEntity = G.Soup.CreateEntity
 G.Soup.CreateEntity = function()
 	local entity = G.Soup.OldCreateEntity()
@@ -160,22 +169,24 @@ end
 G.Initialized = false
 G.Init = function()
 	G.SerializationUtility.Init()
+	RequireComponents(G.SharedECS)
 	RequireFunctions(G.SharedECS)
 	RequireSystems(G.SharedECS)
-	RequireComponents(G.SharedECS)
+	
 	if G.IsServer then
+		RequireComponents(G.ServerECS)
 		RequireFunctions(G.ServerECS)
 		RequireSystems(G.ServerECS)
-		RequireComponents(G.ServerECS)
+		
 	else
 		--init base ui garbage
-		G.MainScreenGui = game.Players.LocalPlayer.PlayerGui:WaitForChild("MainScreenGui", 10)
+		G.MainScreenGui = game.Players.LocalPlayer.PlayerGui:WaitForChild("MainScreenGui", 60)
 		
 		G.MainGuiEntity = G.Soup.CreateEntity()
 		G.Soup.CreateComponent(G.MainGuiEntity, "Frame", {
 			mainUI = true,
 			instance = G.MainScreenGui,
-			size = {0, G.MainScreenGui.AbsoluteSize.X,0,G.MainScreenGui.AbsoluteSize.Y}
+			size = {0, G.MainScreenGui.AbsoluteSize.X, 0, G.MainScreenGui.AbsoluteSize.Y}
 			--globalSize = G.MainScreenGui.AbsoluteSize
 		})
 		require(SharedFolder.ClientGlobals)
@@ -192,6 +203,8 @@ G.ProfileCall = function(name, func, ...)
 end
 
 local call = true
+--default soup query
+
 G.Query = function(components, func)
     for _, component in ipairs(G.Soup.GetCollection(components[1])) do
 		local entity = component.Entity
@@ -203,8 +216,45 @@ G.Query = function(components, func)
 			func(entity)
 		end
     end
+end	
+
+--archSoup query
+--[=[]]
+G.Query = function(components, func)
+    for _, enttiy in ipairs(G.Soup.GetCollection(components)) do
+		func(enttiy)
+    end
+end
+]=]
+
+
+
+--EC Query
+--[=[]]
+G.Soup.OldOldDeleteEntity = G.Soup.DeleteEntity
+
+G.Soup.DeleteEntity = function(entity)
+	table.insert(G.MarkedForDelete, entity)
 end
 
+G.Query = function(components, func)
+    for _, component in ipairs(G.Soup.Components[components[1]]) do
+		local entity = G.Soup.Entities[component.EntityId]
+		if not entity then continue end
+		call = true
+		for _,v in ipairs(components) do
+			if not entity[v] then call = false break end
+		end
+		if call then
+			func(entity)
+		end
+    end
+	for _, entity in pairs(G.MarkedForDelete) do
+		G.Soup.OldOldDeleteEntity(entity)
+	end
+	table.clear(G.MarkedForDelete)
+end
+]=]
 G.Spawn = function(...)
 	
 	local entityOut = G.Soup.CreateEntity()
